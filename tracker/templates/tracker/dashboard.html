@@ -1,0 +1,105 @@
+{% extends 'tracker/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="user-input-section card">
+    <h2>Welcome to Time Tracker</h2>
+    <form method="GET" action="{% url 'tracker:dashboard' %}" class="employee-form" id="employeeForm">
+        <div class="input-group">
+            <label for="employee_name">Employee Name</label>
+            <input type="text" id="employee_name" name="employee_name" value="{{ employee_name }}"
+                placeholder="Enter your full name" required autocomplete="name">
+        </div>
+        <button type="submit" class="btn btn-primary">Open Dashboard</button>
+    </form>
+</div>
+
+{% if employee_name %}
+<div class="dashboard-grid">
+    <div class="card summary-card">
+        <h3>Today's Summary</h3>
+        <div class="duration-display">
+            <span class="label">Net Working Time</span>
+            <span class="value duration-net">{{ today_total|default:"0:00:00"|stringformat:"s"|slice:":7" }}</span>
+        </div>
+        <div class="actions-grid">
+            <form method="POST" action="{% url 'tracker:action' %}">
+                {% csrf_token %}
+                <input type="hidden" name="employee_name" value="{{ employee_name }}">
+                <input type="hidden" name="action" value="clock_in">
+                <button type="submit" class="btn btn-success action-btn" {{ can_clock_in }}><span class="icon">▶️</span>
+                    Clock In</button>
+            </form>
+            <form method="POST" action="{% url 'tracker:action' %}">
+                {% csrf_token %}
+                <input type="hidden" name="employee_name" value="{{ employee_name }}">
+                <input type="hidden" name="action" value="clock_out">
+                <button type="submit" class="btn btn-danger action-btn" {{ can_clock_out }}><span class="icon">⏹️</span>
+                    Clock Out</button>
+            </form>
+            <form method="POST" action="{% url 'tracker:action' %}">
+                {% csrf_token %}
+                <input type="hidden" name="employee_name" value="{{ employee_name }}">
+                <input type="hidden" name="action" value="break_start">
+                <button type="submit" class="btn btn-warning action-btn" {{ can_start_break }}><span
+                        class="icon">⏸️</span> Break Start</button>
+            </form>
+            <form method="POST" action="{% url 'tracker:action' %}">
+                {% csrf_token %}
+                <input type="hidden" name="employee_name" value="{{ employee_name }}">
+                <input type="hidden" name="action" value="break_end">
+                <button type="submit" class="btn btn-info action-btn" {{ can_end_break }}><span class="icon">⏯️</span>
+                    Break End</button>
+            </form>
+        </div>
+
+        {% if today_log %}
+        <div class="today-details">
+            <p><strong>Clock In:</strong> {{ today_log.clock_in|time:"H:i"|default:"--" }}</p>
+            <p><strong>Clock Out:</strong> {{ today_log.clock_out|time:"H:i"|default:"--" }}</p>
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="card history-card">
+        <div class="history-header">
+            <h3>Recent Time Logs</h3>
+            <a href="{% url 'tracker:export_csv' %}?employee_name={{ employee_name }}" class="btn btn-secondary btn-sm">
+                <span class="icon">📥</span> Export CSV
+            </a>
+        </div>
+
+        <div class="table-responsive">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>In</th>
+                        <th>Out</th>
+                        <th>Work Time</th>
+                        <th>Break Time</th>
+                        <th>Net Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for log in recent_logs %}
+                    <tr>
+                        <td>{{ log.date }}</td>
+                        <td>{{ log.clock_in|time:"H:i"|default:"--" }}</td>
+                        <td>{{ log.clock_out|time:"H:i"|default:"--" }}</td>
+                        <td>{{ log.total_work_duration|default:"0:00:00"|stringformat:"s"|slice:":7" }}</td>
+                        <td>{{ log.total_break_duration|default:"0:00:00"|stringformat:"s"|slice:":7" }}</td>
+                        <td class="font-bold">{{ log.net_duration|default:"0:00:00"|stringformat:"s"|slice:":7" }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6" class="text-center">No logs found. Start tracking!</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}
