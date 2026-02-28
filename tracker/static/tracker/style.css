@@ -50,7 +50,13 @@ body {
 .h-container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0 1.5rem;
+    padding: 0 1rem;
+}
+
+@media(min-width: 768px) {
+    .h-container {
+        padding: 0 1.5rem;
+    }
 }
 
 .brand {
@@ -64,8 +70,15 @@ body {
 
 .container {
     max-width: 1200px;
-    margin: 2rem auto;
-    padding: 0 1.5rem;
+    margin: 1.5rem auto;
+    padding: 0 1rem;
+}
+
+@media(min-width: 768px) {
+    .container {
+        margin: 2rem auto;
+        padding: 0 1.5rem;
+    }
 }
 
 /* Cards */
@@ -179,13 +192,29 @@ input[type="text"]:focus {
     gap: 1rem;
 }
 
+@media(min-width: 600px) {
+    .employee-form {
+        flex-direction: row;
+        align-items: flex-end;
+    }
+    
+    .employee-form .input-group {
+        margin-bottom: 0;
+        flex: 1;
+    }
+    
+    .employee-form .btn {
+        height: 46px; /* Match input height roughly */
+    }
+}
+
 .dashboard-grid {
     display: grid;
     grid-template-columns: 1fr;
     gap: 1.5rem;
 }
 
-@media(min-width: 768px) {
+@media(min-width: 992px) {
     .dashboard-grid {
         grid-template-columns: 350px 1fr;
     }
@@ -220,8 +249,14 @@ input[type="text"]:focus {
 
 .actions-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
     gap: 0.75rem;
+}
+
+@media(min-width: 480px) {
+    .actions-grid {
+        grid-template-columns: 1fr 1fr;
+    }
 }
 
 .action-btn {
@@ -245,9 +280,18 @@ input[type="text"]:focus {
 /* History block */
 .history-header {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: flex-start;
     margin-bottom: 1rem;
+}
+
+@media(min-width: 480px) {
+    .history-header {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
 }
 
 .table-responsive {
