@@ -1,4 +1,4 @@
-# Enterprise Time Tracker
+# Time Tracker
 
 A simple, robust Time Tracking web application built with Django. It allows employees to seamlessly clock in, clock out, and track their breaks, while providing a clear summary of their worked hours and the ability to export their logs.
 
