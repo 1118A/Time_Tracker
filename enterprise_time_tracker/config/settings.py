@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-gq$1di$rv61t=eb=uhomobh)$t#6hx4q4!9-jz743et*(*t#c9
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['sky-time-tacker.up.railway.app', 'localhost', '127.0.0.1']
 
 
 # Application definition
